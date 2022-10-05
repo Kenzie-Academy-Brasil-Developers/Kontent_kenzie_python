@@ -8,3 +8,4 @@ class Content(models.Model):
     students = models.IntegerField()
     description = models.TextField()
     is_active = models.BooleanField(default = False)
+
