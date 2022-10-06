@@ -9,3 +9,6 @@ class Content(models.Model):
     description = models.TextField()
     is_active = models.BooleanField(default = False)
 
+
+    def __repr__ (self):
+        return f"<[{self.id}] {self.title} - {self.module}>"
