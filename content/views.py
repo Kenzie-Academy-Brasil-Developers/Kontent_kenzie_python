@@ -71,6 +71,13 @@ class Api_Class_View_by_id (APIView):
         except Content.DoesNotExist:
             return Response({"message": "Content not found."}, status.HTTP_404_NOT_FOUND)
 
+class Api_Class_View_by_title (APIView):
+    
+ def get(self, request):
+      title = request.query_params.get('title', None)
 
+      accounts = Content.objects.filter(title=title)
 
+      accounts_dict = [model_to_dict(account) for account in accounts]
 
+      return Response(accounts_dict)
