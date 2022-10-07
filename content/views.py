@@ -74,10 +74,14 @@ class Api_Class_View_by_id (APIView):
 class Api_Class_View_by_title (APIView):
     
  def get(self, request):
-      title = request.query_params.get('title', None)
+    title = request.query_params.get('title', None)
 
-      content = Content.objects.filter(title__iexact=title)
+    content = Content.objects.filter(title__icontains=title)
 
-      content_dict = [model_to_dict(account) for account in content]
+    print("-" * 10)
 
-      return Response(content_dict)
+    print(content)
+
+    content_dict = [model_to_dict(account) for account in content]
+
+    return Response(content_dict)
