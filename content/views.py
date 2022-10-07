@@ -28,60 +28,49 @@ class Api_Class_View (APIView):
         
         if data_validade.is_valid():
             
-            contenty = Content.objects.create(**request.data)
+            contenty = Content.objects.create(**data_validade.data)
             contenty_dict = model_to_dict(contenty)
             return Response(contenty_dict, status.HTTP_201_CREATED)
 
         else:
             return Response(data_validade.errors,status.HTTP_400_BAD_REQUEST)
 
+class Api_Class_View_by_id (APIView):
+
+    def get(self, request,content_id):
+        try:
+            contenty = Content.objects.get(id=content_id)
+            contenty_dict = model_to_dict(contenty)
+            return Response(contenty_dict)
+        except Content.DoesNotExist: 
+            return Response({"message": "Content not found."}, status.HTTP_404_NOT_FOUND)
 
 
-
-        # contador2 = 0
-
-        # obj2 = {}
-
-        # if(request.data["title"]):
-        #     print(type(request.data["title"]))
-        #     return Response(obj2)
+    def patch(self, request,content_id):
+        try:
+            contenty = Content.objects.get(id=content_id)
+        except Content.DoesNotExist: 
+            return Response({"message": "Content not found."}, status.HTTP_404_NOT_FOUND)
 
 
-        # contador = 0
+        for key, value in request.data.items():
+            # ipdb.set_trace()
+            setattr(contenty, key, value)
 
-        # obj = {}
-        
+        contenty.save()
+        person_dict = model_to_dict(contenty)
 
-        # if(type(request.data["title"]) != str):
-        #     contador = contador + 1
-        #     obj["title"] = "must be a str"
-            
-        # if(type(request.data["module"]) != str):
-        #     contador = contador + 1
-        #     obj["module"] = "must be a str"
+        return Response(person_dict)
 
-        # if(type(request.data["description"]) != str):
-        #     contador = contador + 1
-        #     obj["description"] = "must be a str"
+    def delete(self, request,content_id):
+        try:
+            person = Content.objects.get(id=content_id)
+            person.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
 
-        # if(type(request.data["students"]) != int):
-        #     contador = contador + 1
-        #     obj["students"] = "must be a int"
+        except Content.DoesNotExist:
+            return Response({"message": "Content not found."}, status.HTTP_404_NOT_FOUND)
 
-        # if(type(request.data["is_active"]) != bool):
-        #     contador = contador + 1
-        #     obj["titis_activele"] = "must be a bool"
-
-
-        # if(contador > 0):
-        #     return Response(obj)
-            
-
-        # ipdb.set_trace()
-    
-        # print("-" * 100)
-        # print(request.data["title"])
-        # print("-" * 100)
 
 
 
