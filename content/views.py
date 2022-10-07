@@ -76,8 +76,8 @@ class Api_Class_View_by_title (APIView):
  def get(self, request):
       title = request.query_params.get('title', None)
 
-      accounts = Content.objects.filter(title=title)
+      content = Content.objects.filter(title__iexact=title)
 
-      accounts_dict = [model_to_dict(account) for account in accounts]
+      content_dict = [model_to_dict(account) for account in content]
 
-      return Response(accounts_dict)
+      return Response(content_dict)
